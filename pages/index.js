@@ -1,6 +1,7 @@
 import React from 'react'
 import TODO from '../src/TODO'
 import WEATHER from '../src/WEATHER'
+import Head from 'next/head'
 
 export default function Home() {
   const [error, setError] = React.useState({ show: false, message: "" })
@@ -17,10 +18,14 @@ export default function Home() {
 
   return (
     <div className="relative w-full h-auto flex flex-col md:flex-row">
+      <Head>
+        <title>HomeDash</title>
+        <link rel="icon" href="/favicon.ico" />
+      </Head>
       <div className="w-full h-screen md:w-1/2">
         <TODO setError={setError} />
       </div>
-      <div className="w-full h-screen md:w-1/2">
+      <div className="w-full h-screen md:w-1/2" onClick={handleClick}>
         <WEATHER setError={setError} />
       </div>
       {error.show &&
