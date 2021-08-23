@@ -50,6 +50,7 @@ export default function Home() {
       })
     }))
   }, [])
+  
   return (
     <>
       <style jsx global>
@@ -65,9 +66,9 @@ export default function Home() {
       <div className="w-full h-full bg-black">
         <div className="w-full h-full flex flex-col relative sm:flex-row sm:flex-wrap sm:items-center">
           {
-            boards.map(board => {
+            boards.map((board, index) => {
               return (
-                <ChessBoard board={board} />
+                <ChessBoard key={index} name={index} board={board} />
               )
             })
           }
