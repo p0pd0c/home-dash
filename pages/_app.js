@@ -1,6 +1,7 @@
 import 'tailwindcss/tailwind.css'
 import { useEffect } from 'react'
 import Head from "next/head"
+import '../public/css/chessboard-1.0.0.css'
 function MyApp({ Component, pageProps }) {
   useEffect(() => {
     if("serviceWorker" in navigator) {
@@ -43,6 +44,8 @@ function MyApp({ Component, pageProps }) {
         />
         <link rel="apple-touch-icon" href="/images/apple-icon.png"></link>
         <meta name="theme-color" content="#317EFB" />
+        <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+        <script src="js/chessboard-1.0.0.js"></script>
       </Head>
       <Component {...pageProps} />
     </>

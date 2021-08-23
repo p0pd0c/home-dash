@@ -1,77 +1,81 @@
 import React from 'react'
-import {config} from '@fortawesome/fontawesome-svg-core'
-import '@fortawesome/fontawesome-svg-core/styles.css'
-config.autoAddCss = false
-import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
-import { faChessPawn, 
-         faChessRook, 
-         faChessKnight,
-         faChessBishop,
-         faChessKing,
-        faChessQueen } from '@fortawesome/fontawesome-free-solid'
 
 import games from '../public/games.json'
-import ChessBoard from '../src/ChessBoard'
 
-const chessmap = {
-  'P': <FontAwesomeIcon icon={faChessPawn} size="2x" className="text-white" />,
-  'R': <FontAwesomeIcon icon={faChessRook} size="2x" className="text-white" />,
-  'N': <FontAwesomeIcon icon={faChessKnight} size="2x" className="text-white" />,
-  'B': <FontAwesomeIcon icon={faChessBishop} size="2x" className="text-white" />,
-  'K': <FontAwesomeIcon icon={faChessKing} size="2x" className="text-white" />,
-  'Q': <FontAwesomeIcon icon={faChessQueen} size="2x" className="text-white" />,
-  ' ': <></>,
-  'p': <FontAwesomeIcon icon={faChessPawn} size="2x" className="text-black" />,
-  'r': <FontAwesomeIcon icon={faChessRook} size="2x" className="text-black" />,
-  'n': <FontAwesomeIcon icon={faChessKnight} size="2x" className="text-black" />,
-  'b': <FontAwesomeIcon icon={faChessBishop} size="2x" className="text-black" />,
-  'k': <FontAwesomeIcon icon={faChessKing} size="2x" className="text-black" />,
-  'q': <FontAwesomeIcon icon={faChessQueen} size="2x" className="text-black" />
-}
-
-function* id() {
-  let i = 0
-  while(true) {
-    yield i++
-  }
-}
+import { v4 as uuidv4 } from 'uuid'
 
 export default function Home() {
+  function* chessGameID() {
+    let i = 0
+    while(true) {
+      yield i++
+    }
+  }
+
   const [boards, setBoards] = React.useState([])
+  const [maker, setMaker] = React.useState(null)
+  const [makerData, setMakerData] = React.useState({
+    white: "",
+    black: "",
+    details: ""
+  })
+
+  const handleMakerUpdate = (e) => {
+    setMakerData({...makerData, [e.target.name]: e.target.value })
+  }
+
+  const handleMakerSave = async () => {
+    console.log(maker.fen())
+    if(makerData.white.length === 0 || makerData.black.length === 0) return
+    let rsp = await fetch(`/api/chess`, { 
+      method: "POST", 
+      body: JSON.stringify({ fen: maker.fen(), white: makerData.white, black: makerData.black, details: makerData.details, gameID: uuidv4() })
+    })
+    let data = await rsp.json()
+    console.log(data)
+  }
+
+  const handleGameLoad = async (e) => {
+    console.log('loaded', e)
+  }
+
   React.useEffect(async () => {
-    // Read chess game from FILE
-    setBoards(games.map((game, index) => {
-      return game.board.map(row => {
-        return (
-          row.map(slot => {
-            return chessmap[slot]
-          })
-        )
-      })
+    let rsp = await fetch(`/api/chess`, { method: "GET" })
+    let data = await rsp.json()
+    setBoards(data.map(game => {
+      return game.data
     }))
+    if(typeof window.console !== 'undefined') {
+      let boardMaker = await Chessboard('boardMaker', {
+        draggable: true,
+        dropOffBoard: 'trash',
+        sparePieces: true,
+        showNotation: false
+      })
+      setMaker(boardMaker)
+      console.log('mounted board maker')
+    }
   }, [])
-  
+
   return (
     <>
-      <style jsx global>
-        {`
-          html {
-            margin: 0;
-            padding: 0;
-            height: 100%;
-            background-color: black;
-          }
-        `}
-      </style>
       <div className="w-full h-full bg-black">
-        <div className="w-full h-full flex flex-col relative sm:flex-row sm:flex-wrap sm:items-center">
-          {
-            boards.map((board, index) => {
-              return (
-                <ChessBoard key={index} name={index} board={board} />
-              )
-            })
-          }
+        <div id="makerContainer" className="w-96">
+          <div id="boardMaker" className="w-full"></div>
+          <form onSubmit={e => e.preventDefault()} className="flex flex-row w-full">
+            <input type="text" name="white" id="white_player_name" placeholder="White name" className="w-1/4 p-1 border-2 focus:outline-none" value={makerData.white} onChange={handleMakerUpdate} />
+            <input type="text" name="black" id="black_player_name" placeholder="Black name" className="w-1/4 p-1 border-2 focus:outline-none" value={makerData.black} onChange={handleMakerUpdate} />
+            <input type="text" name="details" id="details" placeholder="Details" className="w-1/4 p-1 border-2 focus:outline-none" value={makerData.details} onChange={handleMakerUpdate} />
+            <button type="submit" className="text-white text-center w-1/4 hover:bg-white hover:text-black focus:outline-none" onClick={handleMakerSave}>Submit</button>
+          </form>
+          <div id="filterContainer" className="flex flex-row w-full text-white p-1">
+            Search By
+          </div>
+        </div>
+        <div id="gamesContainer" className="h-screen">
+          {boards.map(board => {
+            return <div key={board.gameID} id={board.gameID}></div>
+          })}
         </div>
       </div>
     </>

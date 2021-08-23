@@ -9,14 +9,17 @@
     "@fortawesome/fontawesome-free-solid": "^5.0.13",
     "@fortawesome/fontawesome-svg-core": "^1.2.36",
     "@fortawesome/react-fontawesome": "^0.1.15",
+    "chessboardjs": "^0.0.1",
     "cors": "^2.8.5",
     "faunadb": "^4.3.0",
+    "jquery": "^3.6.0",
     "mongodb": "^4.1.0",
     "next": "latest",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-modal": "^3.14.3",
-    "unsplash-js": "^7.0.15"
+    "unsplash-js": "^7.0.15",
+    "uuid": "^8.3.2"
   },
   "devDependencies": {
     "autoprefixer": "^10.2.6",
