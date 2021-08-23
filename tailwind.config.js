@@ -17,6 +17,11 @@ module.exports = {
       "cyan": "#2ec4b6",
       "red": "#e71d36",
       "yellow": "#ff9f1c",
+      "wheat": "#f0dab5",
+      "peru": "#b58962"
+    }),
+    textColor: theme => ({
+      ...theme('colors')
     })
   },
 }

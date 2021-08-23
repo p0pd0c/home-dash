@@ -1,17 +1,78 @@
 import React from 'react'
+import {config} from '@fortawesome/fontawesome-svg-core'
+import '@fortawesome/fontawesome-svg-core/styles.css'
+config.autoAddCss = false
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
+import { faChessPawn, 
+         faChessRook, 
+         faChessKnight,
+         faChessBishop,
+         faChessKing,
+        faChessQueen } from '@fortawesome/fontawesome-free-solid'
+
+import games from '../public/games.json'
+import ChessBoard from '../src/ChessBoard'
+
+const chessmap = {
+  'P': <FontAwesomeIcon icon={faChessPawn} size="2x" className="text-white" />,
+  'R': <FontAwesomeIcon icon={faChessRook} size="2x" className="text-white" />,
+  'N': <FontAwesomeIcon icon={faChessKnight} size="2x" className="text-white" />,
+  'B': <FontAwesomeIcon icon={faChessBishop} size="2x" className="text-white" />,
+  'K': <FontAwesomeIcon icon={faChessKing} size="2x" className="text-white" />,
+  'Q': <FontAwesomeIcon icon={faChessQueen} size="2x" className="text-white" />,
+  ' ': <></>,
+  'bP': <FontAwesomeIcon icon={faChessPawn} size="2x" className="text-black" />,
+  'bR': <FontAwesomeIcon icon={faChessRook} size="2x" className="text-black" />,
+  'bN': <FontAwesomeIcon icon={faChessKnight} size="2x" className="text-black" />,
+  'bB': <FontAwesomeIcon icon={faChessBishop} size="2x" className="text-black" />,
+  'bK': <FontAwesomeIcon icon={faChessKing} size="2x" className="text-black" />,
+  'bQ': <FontAwesomeIcon icon={faChessQueen} size="2x" className="text-black" />
+}
+
+function* id() {
+  let i = 0
+  while(true) {
+    yield i++
+  }
+}
 
 export default function Home() {
-  const [backgroundURL, setBackgroundURL] = React.useState(null)
+  const [boards, setBoards] = React.useState([])
   React.useEffect(async () => {
-    let data = await fetch(`/api/unsplash/cats`)
-    let body = await data.json()
-    setBackgroundURL(body.url)
+    // Read chess game from FILE
+    setBoards(games.map((game, index) => {
+      return game.board.map(row => {
+        return (
+          row.map(slot => {
+            return chessmap[slot]
+          })
+        )
+      })
+    }))
   }, [])
   return (
-    <div className="w-screen h-screen bg-black">
-      {backgroundURL &&
-        <img className="w-full h-full" src="https://images.unsplash.com/photo-1592194996308-7b43878e84a6?crop=entropy&cs=srgb&fm=jpg&ixid=MnwyNTE3MDh8MHwxfHNlYXJjaHwxfHxjYXRzfGVufDB8fHx8MTYyOTQ5NTkwMg&ixlib=rb-1.2.1&q=85" />
-      }
-    </div>
+    <>
+      <style jsx global>
+        {`
+          html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            background-color: black;
+          }
+        `}
+      </style>
+      <div className="w-full h-full bg-black">
+        <div className="w-full h-full flex flex-col relative sm:flex-row sm:flex-wrap sm:items-center">
+          {
+            boards.map(board => {
+              return (
+                <ChessBoard board={board} />
+              )
+            })
+          }
+        </div>
+      </div>
+    </>
   )
 }
