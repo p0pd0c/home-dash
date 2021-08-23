@@ -33,6 +33,11 @@ export default function Home() {
     })
     let data = await rsp.json()
     console.log(data)
+    setMakerData({
+      white: "",
+      black: "",
+      details: ""
+    })
   }
 
   const handleGameLoad = async (e) => {
