@@ -21,12 +21,12 @@ const chessmap = {
   'K': <FontAwesomeIcon icon={faChessKing} size="2x" className="text-white" />,
   'Q': <FontAwesomeIcon icon={faChessQueen} size="2x" className="text-white" />,
   ' ': <></>,
-  'bP': <FontAwesomeIcon icon={faChessPawn} size="2x" className="text-black" />,
-  'bR': <FontAwesomeIcon icon={faChessRook} size="2x" className="text-black" />,
-  'bN': <FontAwesomeIcon icon={faChessKnight} size="2x" className="text-black" />,
-  'bB': <FontAwesomeIcon icon={faChessBishop} size="2x" className="text-black" />,
-  'bK': <FontAwesomeIcon icon={faChessKing} size="2x" className="text-black" />,
-  'bQ': <FontAwesomeIcon icon={faChessQueen} size="2x" className="text-black" />
+  'p': <FontAwesomeIcon icon={faChessPawn} size="2x" className="text-black" />,
+  'r': <FontAwesomeIcon icon={faChessRook} size="2x" className="text-black" />,
+  'n': <FontAwesomeIcon icon={faChessKnight} size="2x" className="text-black" />,
+  'b': <FontAwesomeIcon icon={faChessBishop} size="2x" className="text-black" />,
+  'k': <FontAwesomeIcon icon={faChessKing} size="2x" className="text-black" />,
+  'q': <FontAwesomeIcon icon={faChessQueen} size="2x" className="text-black" />
 }
 
 function* id() {
