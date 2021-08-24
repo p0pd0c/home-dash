@@ -1,4 +1,4 @@
-export default function ChessBoard({ board, white, black, description }) {
+export default function ChessBoard({ board }) {
     if(!board) return <></>
     return (
         <div className="w-min flex flex-col m-auto p-4">

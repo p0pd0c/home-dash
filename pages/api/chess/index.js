@@ -14,11 +14,17 @@ export default async function handler(req, res) {
     }
 
     if(req.method === "GET") {
-        // GET By Winner Name
-        if(req.query.color) {
-            let { data } = await client.query(Map(Paginate(Match(Index("games_by_color"), req.query.color)), Lambda("gameRef", Get(Var("gameRef")))))
+        // GET By winner's name
+        if(req.query.winner) {
+            let { data } = await client.query(Map(Paginate(Match(Index("games_by_winner"), req.query.winner)), Lambda("gameRef", Get(Var("gameRef")))))
             return res.status(200).json(data)
         }
+
+        // if(req.query.winner) {
+        //     let { data } = await client.query(Map(Paginate(Match(Index(), req.query.winner)), Lambda("gameRef", Get(Var("gameRef")))))
+        //     return res.status(200).json(data)
+        // }
+
         // GET ALL
         let { data } = await client.query(
             Map(Paginate(Match(Index("all_games"))), Lambda("gameRef", Get(Var("gameRef"))))
