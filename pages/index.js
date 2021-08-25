@@ -151,6 +151,8 @@ export default function Home() {
             <select id="filter" name="filter" className="p-1 focus:outline-none w-1/4" onChange={(e) => { setFilter(e.target.value) }} value={filter}>
               <option value="">none</option>
               <option value="winner">winner</option>
+              <option value="white">white</option>
+              <option value="black">black</option>
             </select>
             { filter !== "" &&
               <form onSubmit={handleFilterSubmit} className="w-1/2">

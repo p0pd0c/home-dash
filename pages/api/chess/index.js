@@ -20,10 +20,15 @@ export default async function handler(req, res) {
             return res.status(200).json(data)
         }
 
-        // if(req.query.winner) {
-        //     let { data } = await client.query(Map(Paginate(Match(Index(), req.query.winner)), Lambda("gameRef", Get(Var("gameRef")))))
-        //     return res.status(200).json(data)
-        // }
+        if(req.query.white) {
+            let { data } = await client.query(Map(Paginate(Match(Index("games_by_white"), req.query.white)), Lambda("gameRef", Get(Var("gameRef")))))
+            return res.status(200).json(data)
+        }
+
+        if(req.query.black) {
+            let { data } = await client.query(Map(Paginate(Match(Index("games_by_black"), req.query.black)), Lambda("gameRef", Get(Var("gameRef")))))
+            return res.status(200).json(data)
+        }
 
         // GET ALL
         let { data } = await client.query(
