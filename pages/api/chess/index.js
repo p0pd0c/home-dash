@@ -13,6 +13,10 @@ export default async function handler(req, res) {
         return res.status(200).json(ref)
     }
 
+    if(req.method === "PUT") {
+        return res.status(500).json({ message: "Method not yet supported. Should accept a game by it's fauna gameID and should allow for updates to that document" })
+    }
+
     if(req.method === "GET") {
         // GET By winner's name
         if(req.query.winner) {
