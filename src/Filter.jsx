@@ -8,6 +8,7 @@ export default function Filter({ filter, setFilter, handleFilterSubmit, criteria
               <option value="winner">winner</option>
               <option value="white">white</option>
               <option value="black">black</option>
+              <option value="details">detail</option>
             </select>
             { filter !== "" &&
               <form onSubmit={handleFilterSubmit} className="w-1/2">
