@@ -34,6 +34,11 @@ export default async function handler(req, res) {
             return res.status(200).json(data)
         }
 
+        if(req.query.gameID) {
+            let { data } = await client.query(Map(Paginate(Match(Index("games_by_id"), req.query.gameID)), Lambda("gameRef", Get(Var("gameRef")))))
+            return res.status(200).json(data)
+        }
+
         // GET ALL
         let { data } = await client.query(
             Map(Paginate(Match(Index("all_games"))), Lambda("gameRef", Get(Var("gameRef"))))

@@ -59,8 +59,8 @@ export default function ChessBoard({ board }) {
 
     if(mappedBoard === null) return <></>
     return (
-        <div className="flex flex-row justify-center">
-            <div className="w-min flex flex-col p-4">
+        <div className={`flex flex-row ${displayDetails? "w-full justify-center order-first" : ""}`}>
+            <div className={`flex flex-col p-4 ${displayDetails? "w-1/2" : ""} items-center`}>
             {
             mappedBoard.map((row, ri) => {
                 return (
@@ -90,10 +90,13 @@ export default function ChessBoard({ board }) {
             }
             </div>
             { displayDetails && 
-                <div className="w-64 bg-white">
-                    {Object.entries(board).map(details => {
-                        return <div>{`${details[0]} ${details[1]}`}</div>
-                    })}
+                <div className="w-1/2 p-4">
+                    <div className="bg-white w-max h-full p-4 flex flex-col justify-between">
+                        <p>White: {board.white}</p>
+                        <p>Black: {board.black}</p>
+                        <p className="w-2/3">Details: {board.details}</p>
+                        <button className="hover:bg-black hover:text-white border border-transparent focus:ring-2 focus:ring-purple-400 w-max" onClick={() => {navigator.clipboard.writeText(board.gameID)}}>Game ID</button>
+                    </div>
                 </div>
             }
         </div>
