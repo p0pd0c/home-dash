@@ -1,6 +1,3 @@
-import { ContainsStrRegex, FindStrRegex } from 'faunadb'
-import { contains } from 'jquery'
-
 const faunadb = require('faunadb')
 let { Create, Collection, Paginate, Match, Index, Map, Lambda, Get, Var } = faunadb.query
 const client = new faunadb.Client({ secret: process.env.DB_KEY })
@@ -42,6 +39,7 @@ export default async function handler(req, res) {
             Map(Paginate(Match(Index("all_games"))), Lambda("gameRef", Get(Var("gameRef"))))
         )
 
+        // FILTER OUT GAMES AFTER GET ALL
         if(req.query.details) {
             data = data.filter(datum => datum.data.details.includes(req.query.details))
         }
