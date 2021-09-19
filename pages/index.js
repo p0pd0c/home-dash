@@ -22,6 +22,18 @@ export default function Home() {
       return game.data
     }))
   }
+  
+  const fetchBoardsByTimeRange = async (criteria) => {
+     if(criteria.from && criteria.to) {
+       let rsp = await fetch(`/api/chess?timestamp=range&from=${criteria.from}&to=${criteria.to}`, { method: GET })
+       let data = await rsp.json()
+       setBoards(data.map(game => {
+         return game.data
+       }))
+     } else {
+       fetchBoards() 
+     }
+  }
 
   // Runs when the component mounts to the DOM
   // Get all of the chessboards in the db and serve the Chessboard maker 
@@ -44,6 +56,12 @@ export default function Home() {
   // If the filter criteria is blank, show all games, otherwise make a search with the given criteria
   const handleFilterSubmit = async (e) => {
     e.preventDefault()
+    if(filter === "timestamp") {
+      fetchBoardsByTimeRange(criteria)
+      setFilter("")
+      setCriteria("")
+      return
+    }
     if(criteria === "") {
       fetchBoards()
     } else {
