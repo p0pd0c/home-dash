@@ -18,6 +18,11 @@ export default async function handler(req, res) {
     }
 
     if(req.method === "GET") {
+        if(req.query.timestamp) {
+            let data = {}
+            console.log("TODO")
+            return res.status(200).json(data)
+        }
         // GET By winner's name
         if(req.query.winner) {
             let { data } = await client.query(Map(Paginate(Match(Index("games_by_winner"), req.query.winner)), Lambda("gameRef", Get(Var("gameRef")))))
